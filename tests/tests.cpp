@@ -4,6 +4,9 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
+#include <array>
+#include <string>
+
 TEST_CASE("Testing FixedVector with default allocator", "[vector]")
 {
   SECTION("Creating an empty vector of a given size and adding elements")
@@ -86,6 +89,13 @@ TEST_CASE("Testing FixedVector with default allocator", "[vector]")
     for (std::size_t i{ 0 }; i != v.size(); ++i) {
       REQUIRE(v[i] == static_cast<int>(i));
     }
+
+    // Clear the vector
+    v.clear();
+    REQUIRE(v.empty());
+    REQUIRE(v.size() == 0);
+    REQUIRE(v.capacity() == SIZE);
+    REQUIRE_THROWS_AS(v.at(0), std::out_of_range);
   }
 
   SECTION("Creating a vector from a range of elements", "[vector]")
@@ -170,5 +180,23 @@ TEST_CASE("Testing FixedVector with default allocator", "[vector]")
     for (const int e : v2) {
       REQUIRE(e == 1);
     }
+  }
+
+  SECTION("Clear with non trivial type", "[vector]")
+  {
+    struct Test
+    {
+      Test()
+        : s{ "Testing with a string that is long enough to avoid short string "
+             "optimisation" }
+      {}
+      std::string s;
+    };
+
+    constexpr std::size_t SIZE{ 10 };
+    FV::FixedVector<Test> v{ SIZE, Test{} };
+    v.clear();
+    REQUIRE(v.empty());
+    REQUIRE(v.capacity() == SIZE);
   }
 }
