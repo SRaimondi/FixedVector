@@ -36,7 +36,8 @@ public:
 
   template<typename InputIterator>
   FixedVector(InputIterator first,
-              InputIterator last,
+              std::enable_if_t<!std::is_same_v<InputIterator, value_type>,
+                               InputIterator> last,
               const Allocator& allocator = Allocator{});
 
   FixedVector(const FixedVector& other);
@@ -87,14 +88,6 @@ public:
       std::destroy_at(it);
     }
     next_free_element = storage_start;
-  }
-
-  // Insert an element at the given position
-  template<typename... Args>
-  reference emplace(iterator position, Args&&... args)
-  {
-    new (position) T{ std::forward<Args>(args)... };
-    return *position;
   }
 
   // Insert an element at the end
@@ -180,7 +173,15 @@ public:
   }
 
 private:
-  void checkIndex(const size_type index)
+  // Insert an element at the given position
+  template<typename... Args>
+  reference emplace(iterator position, Args&&... args)
+  {
+    new (position) T{ std::forward<Args>(args)... };
+    return *position;
+  }
+
+  void checkIndex(const size_type index) const
   {
     if (index >= size()) {
       throw std::out_of_range{ "Index out of range in FixedVector" };
@@ -216,9 +217,11 @@ FixedVector<T, Allocator>::FixedVector(const size_type num_elements,
 
 template<typename T, typename Allocator>
 template<typename InputIterator>
-FixedVector<T, Allocator>::FixedVector(InputIterator first,
-                                       const InputIterator last,
-                                       const Allocator& allocator)
+FixedVector<T, Allocator>::FixedVector(
+  InputIterator first,
+  std::enable_if_t<!std::is_same_v<InputIterator, value_type>, InputIterator>
+    last,
+  const Allocator& allocator)
   : FixedVector{ static_cast<size_type>(std::distance(first, last)), allocator }
 {
   for (; first != last; ++first) {
