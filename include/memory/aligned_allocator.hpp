@@ -3,6 +3,7 @@
 #include "memory.hpp"
 
 #include <type_traits>
+#include <new>
 
 namespace FV::Memory {
 
@@ -28,12 +29,19 @@ public:
     const AlignedAllocator<U, other_alignment>&) noexcept
   {}
 
-  [[nodiscard]] T* allocate(const size_type n) const
+  [[nodiscard]] value_type* allocate(const size_type n) const
   {
-    return allocateAligned<T>(alignment, n);
+    auto ptr{ allocateAligned<value_type>(alignment, n) };
+    if (ptr == nullptr) {
+      throw std::bad_alloc{};
+    }
+    return ptr;
   }
 
-  void deallocate(T* ptr, const size_type) const noexcept { freeAligned(ptr); }
+  void deallocate(value_type* ptr, const size_type) const noexcept
+  {
+    std::free(static_cast<void*>(ptr));
+  }
 };
 
 template<typename T,
