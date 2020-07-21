@@ -4,7 +4,7 @@
 
 #include <type_traits>
 
-namespace Cato::Memory {
+namespace FV::Memory {
 
 template<typename T, std::size_t alignment = std::alignment_of_v<T>>
 class AlignedAllocator
@@ -37,9 +37,9 @@ public:
 };
 
 template<typename T,
-  std::size_t alignment_t,
-  typename U,
-  std::size_t alignment_u>
+         std::size_t alignment_t,
+         typename U,
+         std::size_t alignment_u>
 [[nodiscard]] constexpr bool
 operator==(const AlignedAllocator<T, alignment_t>&,
            const AlignedAllocator<U, alignment_u>&) noexcept
@@ -48,9 +48,9 @@ operator==(const AlignedAllocator<T, alignment_t>&,
 }
 
 template<typename T,
-  std::size_t alignment_t,
-  typename U,
-  std::size_t alignment_u>
+         std::size_t alignment_t,
+         typename U,
+         std::size_t alignment_u>
 [[nodiscard]] constexpr bool
 operator!=(const AlignedAllocator<T, alignment_t>&,
            const AlignedAllocator<U, alignment_u>&) noexcept
@@ -58,4 +58,4 @@ operator!=(const AlignedAllocator<T, alignment_t>&,
   return false;
 }
 
-} // namespace Cato::Memory
+} // namespace FV::Memory

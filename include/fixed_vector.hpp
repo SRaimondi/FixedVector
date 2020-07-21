@@ -6,7 +6,7 @@
 #include <memory>
 #include <stdexcept>
 
-namespace Cato::Containers {
+namespace FV {
 
 template<typename T, typename Allocator = Memory::DefaultAllocator<T>>
 class FixedVector
@@ -257,4 +257,4 @@ FixedVector<T, Allocator>::~FixedVector()
   }
 }
 
-} // namespace Cato::Containers
+} // namespace FV

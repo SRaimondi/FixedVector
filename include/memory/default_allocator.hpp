@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <new>
 
-namespace Cato::Memory {
+namespace FV::Memory {
 
 template<typename T>
 class DefaultAllocator
@@ -55,4 +55,4 @@ operator!=(const DefaultAllocator<T>&, const DefaultAllocator<U>&) noexcept
   return false;
 }
 
-} // namespace Cato::Memory
+} // namespace FV::Memory

@@ -9,7 +9,7 @@
 #include <cstdlib>
 #endif
 
-namespace Cato::Memory {
+namespace FV::Memory {
 namespace Internal {
 
 [[nodiscard]] constexpr std::size_t
@@ -42,7 +42,7 @@ allocateAligned(const std::size_t alignment, const std::size_t num_elements)
     _aligned_malloc(rounded_allocation_size, alignment)) };
 #else
   T* ptr{ static_cast<T*>(
-            std::aligned_alloc(alignment, rounded_allocation_size)) };
+    std::aligned_alloc(alignment, rounded_allocation_size)) };
 #endif
 
   if (ptr == nullptr) {
@@ -63,4 +63,4 @@ freeAligned(T* ptr) noexcept
 #endif
 }
 
-} // namespace Cato::Memory
+} // namespace FV::Memory
