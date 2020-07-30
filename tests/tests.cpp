@@ -1,5 +1,4 @@
 #include "fixed_vector.hpp"
-#include "memory/aligned_allocator.hpp"
 
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>

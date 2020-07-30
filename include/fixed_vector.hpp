@@ -1,14 +1,12 @@
 #pragma once
 
-#include "memory/default_allocator.hpp"
-
 #include <iterator>
 #include <memory>
 #include <stdexcept>
 
 namespace FV {
 
-template<typename T, typename Allocator = Memory::DefaultAllocator<T>>
+template<typename T, typename Allocator = std::allocator<T>>
 class FixedVector
 {
 public:
@@ -208,10 +206,14 @@ template<typename T, typename Allocator>
 FixedVector<T, Allocator>::FixedVector(const size_type num_elements,
                                        const value_type& default_value,
                                        const Allocator& allocator)
-  : FixedVector{ num_elements, allocator }
+  : memory_allocator{ allocator }
+  , storage_start{ memory_allocator.allocate(num_elements) }
+  , next_free_element{ storage_start +
+                       static_cast<difference_type>(num_elements) }
+  , storage_end{ storage_start + static_cast<difference_type>(num_elements) }
 {
   for (iterator it{ begin() }; it != storage_end; ++it) {
-    push_back(default_value);
+    emplace(it, default_value);
   }
 }
 
@@ -250,13 +252,13 @@ FixedVector<T, Allocator>::FixedVector(FixedVector&& other) noexcept
 template<typename T, typename Allocator>
 FixedVector<T, Allocator>::~FixedVector()
 {
-  if (begin()) {
+  if (data()) {
     clear();
     memory_allocator.deallocate(
       storage_start,
       static_cast<typename std::allocator_traits<Allocator>::size_type>(
         size()));
-    storage_start = nullptr;
+    storage_start = next_free_element = storage_end = nullptr;
   }
 }
 
