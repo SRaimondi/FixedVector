@@ -11,7 +11,7 @@ TEST_CASE("Testing FixedVector with default allocator", "[vector]")
   SECTION("Creating an empty vector of a given size and adding elements")
   {
     constexpr std::size_t SIZE{ 10 };
-    FV::FixedVector<int> v{ SIZE };
+    fv::FixedVector<int> v{ SIZE };
 
     // Check size and capacity
     REQUIRE(v.size() == 0);
@@ -48,7 +48,7 @@ TEST_CASE("Testing FixedVector with default allocator", "[vector]")
   {
     constexpr std::size_t SIZE{ 10 };
     constexpr int DEFAULT_VALUE{ 14 };
-    FV::FixedVector<int> v{ SIZE, DEFAULT_VALUE };
+    fv::FixedVector<int> v{ SIZE, DEFAULT_VALUE };
 
     // Check size and capacity
     REQUIRE(v.size() == SIZE);
@@ -103,7 +103,7 @@ TEST_CASE("Testing FixedVector with default allocator", "[vector]")
     const std::array<int, SIZE> a{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
     // Create from range
-    const FV::FixedVector<int> v{ a.begin(), a.end() };
+    const fv::FixedVector<int> v{ a.begin(), a.end() };
     REQUIRE(v.size() == SIZE);
 
     // Check elements
@@ -129,7 +129,7 @@ TEST_CASE("Testing FixedVector with default allocator", "[vector]")
     };
 
     constexpr std::size_t SIZE{ 10 };
-    FV::FixedVector<Test> v{ SIZE };
+    fv::FixedVector<Test> v{ SIZE };
 
     // Add some elements
     for (std::size_t i{ 0 }; i != SIZE; ++i) {
@@ -142,7 +142,7 @@ TEST_CASE("Testing FixedVector with default allocator", "[vector]")
     }
 
     // Test swapping
-    FV::FixedVector<Test> v2{ 2 * SIZE, Test{ 1, 1 } };
+    fv::FixedVector<Test> v2{ 2 * SIZE, Test{ 1, 1 } };
     for (const auto& e : v2) {
       REQUIRE(e.sum == 2);
     }
@@ -159,8 +159,8 @@ TEST_CASE("Testing FixedVector with default allocator", "[vector]")
   SECTION("Copying vectors", "[vector]")
   {
     constexpr std::size_t SIZE{ 10 };
-    const FV::FixedVector<int> v{ 10, 1 };
-    const FV::FixedVector<int> v2{ v };
+    const fv::FixedVector<int> v{ 10, 1 };
+    const fv::FixedVector<int> v2{ v };
     REQUIRE(v.size() == SIZE);
     REQUIRE(v2.size() == SIZE);
     for (std::size_t i{ 0 }; i != SIZE; ++i) {
@@ -171,8 +171,8 @@ TEST_CASE("Testing FixedVector with default allocator", "[vector]")
   SECTION("Moving vectors", "[vector]")
   {
     constexpr std::size_t SIZE{ 10 };
-    FV::FixedVector<int> v{ 10, 1 };
-    FV::FixedVector<int> v2{ std::move(v) };
+    fv::FixedVector<int> v{ 10, 1 };
+    fv::FixedVector<int> v2{ std::move(v) };
     REQUIRE(v2.size() == SIZE);
     REQUIRE(!v2.empty());
     REQUIRE(v.data() == nullptr);
@@ -193,7 +193,7 @@ TEST_CASE("Testing FixedVector with default allocator", "[vector]")
     };
 
     constexpr std::size_t SIZE{ 10 };
-    FV::FixedVector<Test> v{ SIZE, Test{} };
+    fv::FixedVector<Test> v{ SIZE, Test{} };
     v.clear();
     REQUIRE(v.empty());
     REQUIRE(v.capacity() == SIZE);

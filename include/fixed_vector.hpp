@@ -4,7 +4,7 @@
 #include <memory>
 #include <stdexcept>
 
-namespace FV {
+namespace fv {
 
 template<typename T, typename Allocator = std::allocator<T>>
 class FixedVector
