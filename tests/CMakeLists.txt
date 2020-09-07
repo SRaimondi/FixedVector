@@ -2,11 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 project(FixedVectorTests LANGUAGES CXX)
 
 # Set project source files
-set(HEADER_FILES
-        ../include/memory/memory.hpp
-        ../include/memory/default_allocator.hpp
-        ../include/memory/aligned_allocator.hpp
-        ../include/fixed_vector.hpp)
+set(HEADER_FILES ../include/fixed_vector.hpp)
 
 set(SOURCE_FILES tests.cpp)
 
